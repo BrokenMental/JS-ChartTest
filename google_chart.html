@@ -1,0 +1,66 @@
+<div id="chart_div"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+
+// 차트에 적용될 패키지?
+google.charts.load('current', {packages: ['corechart', 'bar']});
+// drawDualY Callback 함수로 차트 적용
+google.charts.setOnLoadCallback(drawDualY);
+
+// addColumn에 맞는 addRows를 삭제해주면 차트 개수가 조정된다.
+function drawDualY() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('timeofday', 'Time of Day');
+      data.addColumn('number', 'Motivation Level');
+      // 여기선 addRows의 맨 뒤 숫자 제거
+      //data.addColumn('number', 'Energy Level');
+
+      // 차트 데이터
+      // v: 데이터의 x값 위치
+      // f: 해당 차트의 값(내용)
+      // 밖의 숫자: 값에 포함되는 수
+      data.addRows([
+        [{v: [1], f: '8 am'}, 1],
+        [{v: [5], f:'10 am'}, 3],
+        [{v: [6], f: '12 pm'}, 5],
+        [{v: [14], f: '2 pm'}, 7],
+        [{v: [16], f: '4 pm'}, 9],
+      ]);
+      
+      var options = {
+        // 전체 타이틀
+        chart: {
+          title: 'Motivation and Energy Level Throughout the Day',
+          subtitle: 'Based on a scale of 1 to 10'
+        },
+        // 구분선 제목
+        series: {
+          0: {axis: 'MotivationLevel'}
+        },
+        // 구분선 설정
+        axes: {
+          y: {
+            MotivationLevel: {label: 'Motivation Level (1-10)'}
+          }
+        },
+        // x축 설정
+        hAxis: {
+          title: 'Time of Day',
+          format: 'h:mm a',
+          viewWindow: {
+            min: [7, 30, 0],
+            max: [17, 30, 0]
+          }
+        },
+        // ?
+        vAxis: {
+          title: 'Rating (scale of 1-10)'
+        }
+      };
+
+      // 차트를 적용할 객체
+      var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
+      // 차트 그리기(데이터, 설정)
+      materialChart.draw(data, options);
+    }
+</script>
