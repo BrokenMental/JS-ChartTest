@@ -1,66 +1,77 @@
 <div id="chart_div"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
+	<script>
+	let testchart = ${sido};
+	
+	// 차트에 적용될 패키지?
+	google.charts.load('current', {packages: ['corechart', 'bar']});
+	// drawDualY Callback 함수로 차트 적용
+	google.charts.setOnLoadCallback(drawDualY);
+	
+	// 차트에 들어갈 데이터 설정 함수
+	function drawDualY() {
+		var data = new google.visualization.DataTable();
+		// 추가되는 데이터 설정(타입(string, number, timeofday), 표시될 내용)
+		data.addColumn('string', '자치구 & 구간');
+		data.addColumn('string', '계');
+		//data.addColumn('timeofday', 'Time of Day');
+		
+		// addColumn에 맞는 addRows 데이터를 삭제해주면 차트 개수가 조정된다.
+		// 여기선 addRows의 맨 뒤 숫자 제거
+		
+		// DB 데이터 삽입 할 경우(json 데이터 활용)
+		for(var i=0; i < testchart.length; i++){
+		// addColumn에서 맞춘 형식에 맞는 순서대로 작성
+		data.addRows([
+		  [testchart[i].jachigu + " " + testchart[i].gugan, testchart[i].gye],
+		]);
+		}
 
-// 차트에 적용될 패키지?
-google.charts.load('current', {packages: ['corechart', 'bar']});
-// drawDualY Callback 함수로 차트 적용
-google.charts.setOnLoadCallback(drawDualY);
-
-// addColumn에 맞는 addRows를 삭제해주면 차트 개수가 조정된다.
-function drawDualY() {
-      var data = new google.visualization.DataTable();
-      data.addColumn('timeofday', 'Time of Day');
-      data.addColumn('number', 'Motivation Level');
-      // 여기선 addRows의 맨 뒤 숫자 제거
-      //data.addColumn('number', 'Energy Level');
-
-      // 차트 데이터
-      // v: 데이터의 x값 위치
-      // f: 해당 차트의 값(내용)
-      // 밖의 숫자: 값에 포함되는 수
-      data.addRows([
-        [{v: [1], f: '8 am'}, 1],
-        [{v: [5], f:'10 am'}, 3],
-        [{v: [6], f: '12 pm'}, 5],
-        [{v: [14], f: '2 pm'}, 7],
-        [{v: [16], f: '4 pm'}, 9],
-      ]);
-      
-      var options = {
-        // 전체 타이틀
-        chart: {
-          title: 'Motivation and Energy Level Throughout the Day',
-          subtitle: 'Based on a scale of 1 to 10'
-        },
-        // 구분선 제목
-        series: {
-          0: {axis: 'MotivationLevel'}
-        },
-        // 구분선 설정
-        axes: {
-          y: {
-            MotivationLevel: {label: 'Motivation Level (1-10)'}
-          }
-        },
-        // x축 설정
-        hAxis: {
-          title: 'Time of Day',
-          format: 'h:mm a',
-          viewWindow: {
-            min: [7, 30, 0],
-            max: [17, 30, 0]
-          }
-        },
-        // ?
-        vAxis: {
-          title: 'Rating (scale of 1-10)'
-        }
-      };
-
-      // 차트를 적용할 객체
-      var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
-      // 차트 그리기(데이터, 설정)
-      materialChart.draw(data, options);
+		// 차트 데이터(addColumn에 추가한 순서대로 적용됨)
+		// timeofday 타입인 경우 (v: 데이터의 x값 위치 / f: 해당 차트의 값(내용))
+		/* data.addRows([
+		  [{v: [1], f: '8 am'}, 1],
+		  [{v: [5], f:'10 am'}, 3],
+		  [{v: [6], f: '12 pm'}, 5],
+		  [{v: [14], f: '2 pm'}, 7],
+		  [{v: [16], f: '4 pm'}, 9],
+		]); */
+		
+		var options = {
+		  // 전체 타이틀
+		  chart: {
+		    title: '김상혁 과제ㅋ',
+		    subtitle: '해결은 했지만 아직 전체적으로 어떻게 쓰는지 잘 모르겠음 ㅋ'
+		  },
+		  // 구분선 제목
+		  series: {
+		    0: {axis: 'gye'}
+		  },
+		  // 구분선 설정
+		  axes: {
+		  	// series에서 맞춰준 제목이랑 동일하게
+			y: {
+				  gye: {label: '2016년 계'}
+				}
+		  },
+		  // x축 설정?????????? 아닌듯
+		  /* hAxis: {
+		    title: 'Time of Day',
+		    format: 'h:mm a',
+		    viewWindow: {
+		      min: [7, 30, 0],
+		      max: [17, 30, 0]
+		    }
+		  }, */
+		  // ?
+		  /* vAxis: {
+		    title: 'Rating (scale of 1-10)'
+		  } */
+		};
+		
+		// 차트를 적용할 객체
+		var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
+		// 차트 그리기(데이터, 설정)
+		materialChart.draw(data, options);
     }
 </script>
